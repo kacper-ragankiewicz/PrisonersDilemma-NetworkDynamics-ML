@@ -1,0 +1,34 @@
+Bazujemy na bibliotece Axelrod
+
+exmple: https://github.com/Axelrod-Python/AxelrodExamples
+
+Założenia:
+
+Impementacja strategii do sieci znajomych z FB
+
+nr.1 (11.01.2025):
+- strategie nie wpływając na relacje pomiędzy użytkownikami
+- użytkownicy nie nawiązują nowych relacji
+
+
+### To Do
+
+- [x] Graph relacji z FB
+      Ten samo co na complex systems problem_5.pdf
+
+- [ ] Plot MTX z FB
+- [x] Przydział strategii
+    Wybrane strategie (10):
+    1. Cooperator
+    2. Defector
+    3. Tit For Tat
+    4. Grudger
+    5. Random
+    6. Pavlovian Strategy
+    7. Imitate the best from frend list
+    Memory base strategy:
+    8. Zero determinant strategy - extortion
+    9. Zero determinant strategy - extortion with forgiveness
+
+- [ ] Puszczenie na T iteracji
+- [ ] Zmienianie strategii
