@@ -4,17 +4,17 @@ from scipy.io import mmread
 import networkx as nx
 
 # Set the file path (ensure the path is correct)
-file_path = './fb_graph/matname.mtx'
+file_path = '../fb_graph/matname.mtx'
 
 # Check if the file exists
 if not os.path.exists(file_path):
     raise FileNotFoundError(f"The file {file_path} does not exist!")
 
-# Read the Matrix Market file as a sparse matrix
+# Read the Matrix Market file and convert it into a sparse matrix
 sparse_matrix = mmread(file_path)
 
 # Convert the sparse matrix into a NetworkX graph
-graph = nx.Graph(sparse_matrix)
+graph = nx.from_scipy_sparse_matrix(sparse_matrix)
 
 # Print basic graph information
 print(f"Number of nodes: {graph.number_of_nodes()}")
@@ -33,11 +33,5 @@ nx.draw(graph, pos,
         with_labels=False,
         edge_color="gray")
 
-# Save the plot as a PNG file
-output_path = './graph_plot.png'
-plt.savefig(output_path, format='png')
-
 # Show the plot
 plt.show()
-
-print(f"Plot saved as {output_path}")

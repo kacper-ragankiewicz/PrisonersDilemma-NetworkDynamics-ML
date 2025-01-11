@@ -28,7 +28,8 @@ nr.1 (11.01.2025):
     7. Imitate the best from frend list
     Memory base strategy:
     8. Zero determinant strategy - extortion
-    9. Zero determinant strategy - extortion with forgiveness
+    9. Cappri strategy
+    10. Appeazer strategy
 
 - [ ] Puszczenie na T iteracji
 - [ ] Zmienianie strategii

@@ -9,6 +9,5 @@ filterset = {
     'max_memory_depth': 4
 }
 
-
 for i in strategies:
     print(i)
