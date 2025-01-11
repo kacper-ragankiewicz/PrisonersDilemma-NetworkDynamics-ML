@@ -7,6 +7,6 @@ exmple: https://github.com/Axelrod-Python/AxelrodExamples
 
 - [ ] Graph FB
 Ten samo co na complex systems problem_5
-- [x] Losowy przydział strategii
-- [x] Puszczenie na T iteracji
+- [ ] Losowy przydział strategii
+- [ ] Puszczenie na T iteracji
 - [ ] Zmienianie strategii
