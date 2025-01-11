@@ -16,7 +16,8 @@ nr.1 (11.01.2025):
 - [x] Graph relacji z FB
       Ten samo co na complex systems problem_5.pdf
 
-- [ ] Plot MTX z FB
+- [x] Plot MTX z FB
+- [ ] Filtracja MTX
 - [x] Przydział strategii
     Wybrane strategie (10):
     1. Cooperator
@@ -26,6 +27,7 @@ nr.1 (11.01.2025):
     5. Random
     6. Pavlovian Strategy
     7. Imitate the best from frend list
+
     Memory base strategy:
     8. Zero determinant strategy - extortion
     9. Cappri strategy
