@@ -33,5 +33,5 @@ nr.1 (11.01.2025):
     9. Cappri strategy
     10. Appeazer strategy
 
-- [ ] Puszczenie na T iteracji
+- [X] Puszczenie na T iteracji
 - [ ] Zmienianie strategii
