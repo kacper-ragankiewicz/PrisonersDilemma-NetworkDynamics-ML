@@ -1,9 +1,11 @@
+from tqdm import tqdm  # For progress tracking
+import axelrod as axl
 import networkx as nx
+import random
+import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
-import random
 
-# Define strategies and colors for visualization
 STRATEGY_COLORS = {
     "Cooperator": "blue",
     "Defector": "red",
@@ -12,72 +14,132 @@ STRATEGY_COLORS = {
 }
 
 
-def create_network_with_scores(file_path):
+def load_graph_with_names(file_path, max_edges=None):
     """
-    Create a graph with players, strategies, and scores.
+    Load a graph from a MatrixMarket coordinate pattern file and assign player names.
+    
+    Args:
+        file_path (str): Path to the .mtx file.
+        max_edges (int, optional): Maximum number of edges to load. If None, load all edges.
     """
-    # Load the graph
-    G = nx.Graph()
     with open(file_path, 'r') as f:
-        for line in f:
-            if not line.startswith('%'):
-                node1, node2 = map(int, line.split()[:2])
-                G.add_edge(node1, node2)
+        lines = f.readlines()
 
-    # Assign strategies and scores randomly for demonstration purposes
+    edges = []
+    for line in lines:
+        if line.startswith('%'):  # Skip comment lines
+            continue
+        parts = line.split()
+        if len(parts) == 2:  # Ensure it's a valid edge
+            node1, node2 = map(int, parts)
+            edges.append((node1, node2))
+
+    # If max_edges is specified, limit the number of edges
+    if max_edges is not None:
+        edges = edges[:max_edges]
+
+    # Create a graph and label nodes with "Player X"
+    G = nx.Graph()
+    G.add_edges_from(edges)
     for node in G.nodes():
-        G.nodes[node]['strategy'] = random.choice(list(STRATEGY_COLORS.keys()))
-        G.nodes[node]['score'] = random.randint(
-            0, 300)  # Replace with actual scores
-
+        G.nodes[node]['name'] = f"Player {node}"
+        G.nodes[node]['score'] = 0  # Initialize scores
     return G
 
 
-def update(frame, G, pos, ax, nodes):
+def assign_strategies(graph, strategies):
+    """
+    Assign a random strategy to each node in the graph.
+    """
+    for node in graph.nodes():
+        graph.nodes[node]['strategy'] = random.choice(strategies)
+
+
+def play_game_round(graph, round_num):
+    """
+    Play a single round of the Iterated Prisoner's Dilemma on each edge of the graph.
+    """
+    game = axl.Game()  # Define the game scoring
+
+    for u, v in graph.edges():
+        strategy_u = graph.nodes[u]['strategy']
+        strategy_v = graph.nodes[v]['strategy']
+
+        # Play one match with only one round
+        match = axl.Match([strategy_u(), strategy_v()], turns=round_num + 1)
+        actions = match.play()
+
+        # Extract scores for the current round
+        score_u, score_v = game.score(actions[round_num])
+
+        # Update scores incrementally
+        graph.nodes[u]['score'] += score_u
+        graph.nodes[v]['score'] += score_v
+
+
+def update(frame, graph, pos, ax):
     """
     Update function for animation frames.
     """
     ax.clear()
     ax.axis("off")
-    scores = nx.get_node_attributes(G, 'score')
-    strategies = nx.get_node_attributes(G, 'strategy')
+
+    # Play one round of the game
+    play_game_round(graph, frame)
+
+    # Get node attributes
+    scores = nx.get_node_attributes(graph, 'score')
+    strategies = nx.get_node_attributes(graph, 'strategy')
 
     # Draw edges
-    nx.draw_networkx_edges(G, pos, ax=ax)
+    nx.draw_networkx_edges(graph, pos, ax=ax)
 
     # Draw nodes with colors based on strategies
-    node_colors = [STRATEGY_COLORS[strategies[node]] for node in G.nodes()]
-    nodes = nx.draw_networkx_nodes(
-        G, pos, ax=ax, node_color=node_colors, node_size=500)
+    node_colors = [STRATEGY_COLORS[strategies[node].__name__]
+                   for node in graph.nodes()]
+    nx.draw_networkx_nodes(
+        graph, pos, ax=ax, node_color=node_colors, node_size=500)
 
     # Add labels for scores
-    labels = {node: f"{node}\n{scores[node]}" for node in G.nodes()}
-    nx.draw_networkx_labels(G, pos, labels=labels, font_size=8, ax=ax)
+    labels = {node: f"{graph.nodes[node]['name']}\n{
+        scores[node]}" for node in graph.nodes()}
+    nx.draw_networkx_labels(graph, pos, labels=labels, font_size=8, ax=ax)
 
     # Title for the frame
-    ax.set_title(f"Frame {frame}")
+    ax.set_title(f"Round {frame + 1}")
 
 
-def animate_graph(G, frames=30, interval=500, output_file="graph_animation.mp4"):
+def animate_graph(graph, total_rounds=10, interval=1000, output_file="graph_animation.gif"):
     """
-    Create an animation showing node colors by strategy and scores on a graph.
+    Animate the graph, showing nodes' strategies and scores over rounds.
     """
-    pos = nx.spring_layout(G)  # Position nodes using a spring layout
+    pos = nx.spring_layout(graph)  # Position nodes using a spring layout
     fig, ax = plt.subplots(figsize=(10, 8))
-    ani = animation.FuncAnimation(fig, update, frames=frames, fargs=(
-        G, pos, ax, None), interval=interval)
+    ani = animation.FuncAnimation(
+        fig, update, frames=total_rounds, fargs=(graph, pos, ax), interval=interval)
 
-    # Save the animation
-    ani.save(output_file, writer="ffmpeg", fps=2)
+    # Save the animation as a GIF
+    ani.save(output_file, writer="pillow", fps=1)
     plt.close(fig)
     print(f"Animation saved to {output_file}")
 
 
-if __name__ == "__main__":
-    # Replace with your actual graph file
-    graph_file = "fb_graph/matname_10.mtx"
-    G = create_network_with_scores(graph_file)
+def main():
+    # Load the graph
+    file_path = "fb_graph/matname.mtx"  # Replace with your file's path
+    max_edges = 100  # Specify the number of edges to process
+    graph = load_graph_with_names(file_path, max_edges=max_edges)
 
-    # Create the animation
-    animate_graph(G, frames=30, interval=500,
-                  output_file="graph_animation.mp4")
+    # Define strategies
+    strategies = [axl.Cooperator, axl.Defector, axl.TitForTat, axl.Random]
+
+    # Assign strategies to nodes
+    assign_strategies(graph, strategies)
+
+    # Animate the graph over 10 rounds
+    animate_graph(graph, total_rounds=10, interval=1000,
+                  output_file="graph_animation.gif")
+
+
+if __name__ == "__main__":
+    main()
