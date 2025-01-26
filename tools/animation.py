@@ -17,7 +17,7 @@ STRATEGY_COLORS = {
 def load_graph_with_names(file_path, max_edges=None):
     """
     Load a graph from a MatrixMarket coordinate pattern file and assign player names.
-    
+
     Args:
         file_path (str): Path to the .mtx file.
         max_edges (int, optional): Maximum number of edges to load. If None, load all edges.
@@ -101,8 +101,7 @@ def update(frame, graph, pos, ax):
         graph, pos, ax=ax, node_color=node_colors, node_size=500)
 
     # Add labels for scores
-    labels = {node: f"{graph.nodes[node]['name']}\n{
-        scores[node]}" for node in graph.nodes()}
+    labels = {node: f"{graph.nodes[node]['name']}\n{scores[node]}" for node in graph.nodes()}
     nx.draw_networkx_labels(graph, pos, labels=labels, font_size=8, ax=ax)
 
     # Title for the frame

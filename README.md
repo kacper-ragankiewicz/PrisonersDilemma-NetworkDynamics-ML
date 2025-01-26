@@ -36,4 +36,4 @@ nr.1 (11.01.2025):
   10. Appeazer strategy
 
 - [x] Puszczenie na T iteracji
-- [ ] Zmienianie strategii
+- [x] Zmienianie strategii

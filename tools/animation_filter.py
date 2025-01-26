@@ -113,8 +113,7 @@ def update(frame, graph, pos, ax, subgraph):
         subgraph, pos, ax=ax, node_color=node_colors, node_size=500)
 
     # Add labels for scores in the subgraph
-    labels = {node: f"{graph.nodes[node]['name']}\n{
-        scores[node]}" for node in subgraph.nodes()}
+    labels = {node: f"{graph.nodes[node]['name']}\n{scores[node]}" for node in subgraph.nodes()}
     nx.draw_networkx_labels(subgraph, pos, labels=labels, font_size=8, ax=ax)
 
     # Title for the frame
@@ -155,7 +154,7 @@ def main():
 
     # Animate the connected component for a specific player (e.g., Player 224)
     animate_subgraph(graph, player_id=2, total_rounds=10,
-                     interval=1000, output_file="connected_component_animation.gif")
+                     interval=10, output_file="connected_component_animation.gif")
 
 
 if __name__ == "__main__":
