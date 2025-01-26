@@ -14,7 +14,7 @@ Implementation of strategies for a Facebook friends network.
 ---
 
 ## To Do
-- [x] **Generate the graph of relationships from Facebook**
+- [x] **Generate the graph of relationships from Facebook**  
       - Same graph as described in **complex systems problem_5.pdf**.
 - [x] **Plot the MTX from Facebook**
 - [ ] **Filter the MTX**
@@ -29,6 +29,7 @@ Implementation of strategies for a Facebook friends network.
    7. **Imitate the Best from Friend List**
 
    **Memory-based strategies**:
+
    8. **Zero Determinant Strategy - Extortion**
    9. **Cappri Strategy**
    10. **Appeaser Strategy**
