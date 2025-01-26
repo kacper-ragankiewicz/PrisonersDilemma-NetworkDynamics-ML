@@ -1,39 +1,37 @@
-Bazujemy na bibliotece Axelrod
+# Axelrod-Based Strategy Implementation
 
-exmple: https://github.com/Axelrod-Python/AxelrodExamples
+We base our work on the **Axelrod** library.
 
-Założenia:
+Example: [AxelrodExamples](https://github.com/Axelrod-Python/AxelrodExamples)
 
-Impementacja strategii do sieci znajomych z FB
+## Assumptions
+Implementation of strategies for a Facebook friends network.
 
-nr.1 (11.01.2025):
+### Version 1 (11.01.2025):
+1. Strategies do not influence relationships between users.
+2. Users do not establish new relationships.
 
-- strategie nie wpływając na relacje pomiędzy użytkownikami
-- użytkownicy nie nawiązują nowych relacji
+---
 
-### To Do
+## To Do
+- [x] **Generate the graph of relationships from Facebook**
+      - Same graph as described in **complex systems problem_5.pdf**.
+- [x] **Plot the MTX from Facebook**
+- [ ] **Filter the MTX**
+- [x] **Assign strategies**  
+      Selected strategies (10):
+   1. **Cooperator**
+   2. **Defector**
+   3. **Tit For Tat**
+   4. **Grudger**
+   5. **Random**
+   6. **Pavlovian Strategy**
+   7. **Imitate the Best from Friend List**
 
-- [x] Graph relacji z FB
-      Ten samo co na complex systems problem_5.pdf
+   **Memory-based strategies**:
+   8. **Zero Determinant Strategy - Extortion**
+   9. **Cappri Strategy**
+   10. **Appeaser Strategy**
 
-- [x] Plot MTX z FB
-- [ ] Filtracja MTX
-- [x] Przydział strategii
-      Wybrane strategie (10):
-
-  1. Cooperator
-  2. Defector
-  3. Tit For Tat
-  4. Grudger
-  5. Random
-  6. Pavlovian Strategy
-  7. Imitate the best from frend list
-
-  Memory base strategy:
-
-  8. Zero determinant strategy - extortion
-  9. Cappri strategy
-  10. Appeazer strategy
-
-- [x] Puszczenie na T iteracji
-- [x] Zmienianie strategii
+- [x] **Run the simulation for T iterations**
+- [x] **Enable strategy switching**
